@@ -21,22 +21,25 @@ body {
 .page { display: none; }
 .page.active { display: block; }
 
-/* 🎹 ピアノ */
+/* 🎹 ピアノ全体 */
 .piano-wrapper {
   overflow-x: auto;
-  margin-top: 20px;
+  margin: 30px auto;
 }
 
 .piano {
+  position: relative;
   display: flex;
   width: max-content;
 }
 
-.key {
+/* 白鍵 */
+.white-key {
   width: 60px;
-  height: 200px;
+  height: 220px;
   border: 1px solid #333;
   background: white;
+  position: relative;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -45,8 +48,30 @@ body {
   user-select: none;
 }
 
-.key:active {
+.white-key:active {
   background: #ddd;
+}
+
+/* 黒鍵 */
+.black-key {
+  width: 40px;
+  height: 140px;
+  background: black;
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  margin-left: -20px;
+  color: white;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.black-key:active {
+  background: #444;
 }
 </style>
 </head>
@@ -54,7 +79,7 @@ body {
 <body>
 
 <h1>🎹 Piano Learning App</h1>
-<p>2オクターブ対応（C4〜B5）</p>
+<p>2オクターブ＋黒鍵対応（C4〜B5）</p>
 
 <div class="nav">
   <button onclick="showPage('home')">Home</button>
@@ -65,7 +90,7 @@ body {
 
 <div id="home" class="page active">
   <h2>ようこそ</h2>
-  <p>鍵盤をクリックすると音が鳴ります</p>
+  <p>白鍵・黒鍵どちらも音が鳴ります</p>
 </div>
 
 <div id="stage1" class="page">
@@ -75,50 +100,77 @@ body {
 
 <div id="stage2" class="page">
   <h2>Stage 2：左手</h2>
-  <p>低音のリズム練習</p>
+  <p>低音でリズム練習</p>
 </div>
 
 <div id="stage3" class="page">
   <h2>Stage 3：両手</h2>
-  <p>右手＋左手</p>
+  <p>両手で演奏しよう</p>
 </div>
 
-<!-- 🎹 2オクターブ -->
+<!-- 🎹 ピアノ -->
 <div class="piano-wrapper">
   <div class="piano">
-    <div class="key" data-note="C4">C4</div>
-    <div class="key" data-note="D4">D4</div>
-    <div class="key" data-note="E4">E4</div>
-    <div class="key" data-note="F4">F4</div>
-    <div class="key" data-note="G4">G4</div>
-    <div class="key" data-note="A4">A4</div>
-    <div class="key" data-note="B4">B4</div>
 
-    <div class="key" data-note="C5">C5</div>
-    <div class="key" data-note="D5">D5</div>
-    <div class="key" data-note="E5">E5</div>
-    <div class="key" data-note="F5">F5</div>
-    <div class="key" data-note="G5">G5</div>
-    <div class="key" data-note="A5">A5</div>
-    <div class="key" data-note="B5">B5</div>
+    <!-- ===== Octave 4 ===== -->
+    <div class="white-key" data-note="C4">C4</div>
+    <div class="black-key" data-note="C#4" style="left:45px">C#</div>
+
+    <div class="white-key" data-note="D4">D4</div>
+    <div class="black-key" data-note="D#4" style="left:105px">D#</div>
+
+    <div class="white-key" data-note="E4">E4</div>
+
+    <div class="white-key" data-note="F4">F4</div>
+    <div class="black-key" data-note="F#4" style="left:225px">F#</div>
+
+    <div class="white-key" data-note="G4">G4</div>
+    <div class="black-key" data-note="G#4" style="left:285px">G#</div>
+
+    <div class="white-key" data-note="A4">A4</div>
+    <div class="black-key" data-note="A#4" style="left:345px">A#</div>
+
+    <div class="white-key" data-note="B4">B4</div>
+
+    <!-- ===== Octave 5 ===== -->
+    <div class="white-key" data-note="C5">C5</div>
+    <div class="black-key" data-note="C#5" style="left:465px">C#</div>
+
+    <div class="white-key" data-note="D5">D5</div>
+    <div class="black-key" data-note="D#5" style="left:525px">D#</div>
+
+    <div class="white-key" data-note="E5">E5</div>
+
+    <div class="white-key" data-note="F5">F5</div>
+    <div class="black-key" data-note="F#5" style="left:645px">F#</div>
+
+    <div class="white-key" data-note="G5">G5</div>
+    <div class="black-key" data-note="G#5" style="left:705px">G#</div>
+
+    <div class="white-key" data-note="A5">A5</div>
+    <div class="black-key" data-note="A#5" style="left:765px">A#</div>
+
+    <div class="white-key" data-note="B5">B5</div>
+
   </div>
 </div>
 
 <script>
-/* ページ切り替え */
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-/* 🔊 AudioContext（ユーザー操作後に作成） */
 let audioCtx = null;
 
 const freqMap = {
-  C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23,
-  G4: 392.00, A4: 440.00, B4: 493.88,
-  C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46,
-  G5: 783.99, A5: 880.00, B5: 987.77
+  C4:261.63, "C#4":277.18, D4:293.66, "D#4":311.13, E4:329.63,
+  F4:349.23, "F#4":369.99, G4:392.00, "G#4":415.30,
+  A4:440.00, "A#4":466.16, B4:493.88,
+
+  C5:523.25, "C#5":554.37, D5:587.33, "D#5":622.25, E5:659.25,
+  F5:698.46, "F#5":739.99, G5:783.99, "G#5":830.61,
+  A5:880.00, "A#5":932.33, B5:987.77
 };
 
 function playNote(note) {
@@ -143,8 +195,7 @@ function playNote(note) {
   osc.stop(audioCtx.currentTime + 0.6);
 }
 
-/* 鍵盤クリック */
-document.querySelectorAll('.key').forEach(key => {
+document.querySelectorAll('.white-key, .black-key').forEach(key => {
   key.addEventListener('click', () => {
     playNote(key.dataset.note);
   });
