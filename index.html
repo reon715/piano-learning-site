@@ -13,27 +13,19 @@ body {
   padding: 20px;
 }
 
-.nav button {
-  margin: 5px;
-  padding: 10px 15px;
-}
-
-.page { display: none; }
-.page.active { display: block; }
-
-/* 🎹 ピアノ全体 */
+/* ===== ピアノ全体 ===== */
 .piano-wrapper {
   overflow-x: auto;
   margin: 30px auto;
 }
 
 .piano {
-  position: relative;
   display: flex;
+  position: relative;
   width: max-content;
 }
 
-/* 白鍵 */
+/* ===== 白鍵 ===== */
 .white-key {
   position: relative;
   width: 60px;
@@ -44,16 +36,15 @@ body {
   align-items: flex-end;
   justify-content: center;
   padding-bottom: 8px;
+  cursor: pointer;
+  user-select: none;
 }
-
-
 
 .white-key:active {
   background: #ddd;
 }
 
-
-
+/* ===== 黒鍵（白鍵の中に重ねる） ===== */
 .black-key {
   position: absolute;
   right: -20px;
@@ -61,15 +52,15 @@ body {
   width: 40px;
   height: 140px;
   background: black;
-  z-index: 2;
   color: white;
-  font-size: 12px;
+  z-index: 10;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   padding-bottom: 6px;
+  font-size: 12px;
+  cursor: pointer;
 }
-
 
 .black-key:active {
   background: #444;
@@ -80,76 +71,68 @@ body {
 <body>
 
 <h1>🎹 Piano Learning App</h1>
-<p>2オクターブ＋黒鍵対応（C4〜B5）</p>
+<p>2オクターブ（C4〜B5）＋黒鍵 正配置</p>
 
-<div class="nav">
-  <button onclick="showPage('home')">Home</button>
-  <button onclick="showPage('stage1')">Stage 1</button>
-  <button onclick="showPage('stage2')">Stage 2</button>
-  <button onclick="showPage('stage3')">Stage 3</button>
-</div>
-
-<div id="home" class="page active">
-  <h2>ようこそ</h2>
-  <p>白鍵・黒鍵どちらも音が鳴ります</p>
-</div>
-
-<div id="stage1" class="page">
-  <h2>Stage 1：右手</h2>
-  <p>C4 C4 G4 G4 A4 A4 G4</p>
-</div>
-
-<div id="stage2" class="page">
-  <h2>Stage 2：左手</h2>
-  <p>低音でリズム練習</p>
-</div>
-
-<div id="stage3" class="page">
-  <h2>Stage 3：両手</h2>
-  <p>両手で演奏しよう</p>
-</div>
-
-<!-- 🎹 ピアノ -->
 <div class="piano-wrapper">
   <div class="piano">
 
     <!-- ===== Octave 4 ===== -->
-    <div class="white-key" data-note="C4">C4</div>
-    <div class="black-key" data-note="C#4" style="left:45px">C#</div>
+    <div class="white-key" data-note="C4">
+      C4
+      <div class="black-key" data-note="C#4">C#</div>
+    </div>
 
-    <div class="white-key" data-note="D4">D4</div>
-    <div class="black-key" data-note="D#4" style="left:105px">D#</div>
+    <div class="white-key" data-note="D4">
+      D4
+      <div class="black-key" data-note="D#4">D#</div>
+    </div>
 
     <div class="white-key" data-note="E4">E4</div>
 
-    <div class="white-key" data-note="F4">F4</div>
-    <div class="black-key" data-note="F#4" style="left:225px">F#</div>
+    <div class="white-key" data-note="F4">
+      F4
+      <div class="black-key" data-note="F#4">F#</div>
+    </div>
 
-    <div class="white-key" data-note="G4">G4</div>
-    <div class="black-key" data-note="G#4" style="left:285px">G#</div>
+    <div class="white-key" data-note="G4">
+      G4
+      <div class="black-key" data-note="G#4">G#</div>
+    </div>
 
-    <div class="white-key" data-note="A4">A4</div>
-    <div class="black-key" data-note="A#4" style="left:345px">A#</div>
+    <div class="white-key" data-note="A4">
+      A4
+      <div class="black-key" data-note="A#4">A#</div>
+    </div>
 
     <div class="white-key" data-note="B4">B4</div>
 
     <!-- ===== Octave 5 ===== -->
-    <div class="white-key" data-note="C5">C5</div>
-    <div class="black-key" data-note="C#5" style="left:465px">C#</div>
+    <div class="white-key" data-note="C5">
+      C5
+      <div class="black-key" data-note="C#5">C#</div>
+    </div>
 
-    <div class="white-key" data-note="D5">D5</div>
-    <div class="black-key" data-note="D#5" style="left:525px">D#</div>
+    <div class="white-key" data-note="D5">
+      D5
+      <div class="black-key" data-note="D#5">D#</div>
+    </div>
 
     <div class="white-key" data-note="E5">E5</div>
 
-    <div class="white-key" data-note="F5">F5</div>
-    <div class="black-key" data-note="F#5" style="left:645px">F#</div>
+    <div class="white-key" data-note="F5">
+      F5
+      <div class="black-key" data-note="F#5">F#</div>
+    </div>
 
-    <div class="white-key" data-note="G5">G5</div>
-    <div class="black-key" data-note="G#5" style="left:705px">G#</div>
+    <div class="white-key" data-note="G5">
+      G5
+      <div class="black-key" data-note="G#5">G#</div>
+    </div>
 
-    <div class="white-key" data-note="A5">A5</div>
-    <div class="black-key" data-note="A#5" style="left:765px">A#</div>
+    <div class="white-key" data-note="A5">
+      A5
+      <div class="black-key" data-note="A#5">A#</div>
+    </div>
 
     <div class="white-key" data-note="B5">B5</div>
 
@@ -157,11 +140,7 @@ body {
 </div>
 
 <script>
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
+/* ===== Audio ===== */
 let audioCtx = null;
 
 const freqMap = {
@@ -196,8 +175,10 @@ function playNote(note) {
   osc.stop(audioCtx.currentTime + 0.6);
 }
 
+/* 白鍵・黒鍵 両方対応 */
 document.querySelectorAll('.white-key, .black-key').forEach(key => {
-  key.addEventListener('click', () => {
+  key.addEventListener('click', (e) => {
+    e.stopPropagation();
     playNote(key.dataset.note);
   });
 });
