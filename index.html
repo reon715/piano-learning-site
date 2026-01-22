@@ -35,40 +35,41 @@ body {
 
 /* 白鍵 */
 .white-key {
+  position: relative;
   width: 60px;
   height: 220px;
   border: 1px solid #333;
   background: white;
-  position: relative;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   padding-bottom: 8px;
-  cursor: pointer;
-  user-select: none;
 }
+
+
 
 .white-key:active {
   background: #ddd;
 }
 
-/* 黒鍵 */
+
+
 .black-key {
+  position: absolute;
+  right: -20px;
+  top: 0;
   width: 40px;
   height: 140px;
   background: black;
-  position: absolute;
-  top: 0;
   z-index: 2;
-  margin-left: -20px;
   color: white;
+  font-size: 12px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   padding-bottom: 6px;
-  font-size: 12px;
-  cursor: pointer;
 }
+
 
 .black-key:active {
   background: #444;
