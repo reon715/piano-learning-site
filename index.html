@@ -1,59 +1,63 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Piano Learning App</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      text-align: center;
-      padding: 20px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piano Learning App</title>
 
-    .nav button {
-      margin: 5px;
-      padding: 10px 18px;
-      font-size: 15px;
-      cursor: pointer;
-    }
+<style>
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #f4f4f4;
+  padding: 20px;
+}
 
-    .page { display: none; }
-    .page.active { display: block; }
+.nav button {
+  margin: 5px;
+  padding: 10px 15px;
+}
 
-    .piano {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
+.page { display: none; }
+.page.active { display: block; }
 
-    .key {
-      width: 55px;
-      height: 200px;
-      border: 1px solid #333;
-      background: white;
-      cursor: pointer;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      padding-bottom: 10px;
-      user-select: none;
-    }
+/* 🎹 ピアノ */
+.piano-wrapper {
+  overflow-x: auto;
+  margin-top: 20px;
+}
 
-    .key:active {
-      background: #ddd;
-    }
-  </style>
+.piano {
+  display: flex;
+  width: max-content;
+}
+
+.key {
+  width: 60px;
+  height: 200px;
+  border: 1px solid #333;
+  background: white;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.key:active {
+  background: #ddd;
+}
+</style>
 </head>
+
 <body>
 
 <h1>🎹 Piano Learning App</h1>
 <p>2オクターブ対応（C4〜B5）</p>
 
 <div class="nav">
-  <button onclick="showPage('home')">ホーム</button>
+  <button onclick="showPage('home')">Home</button>
   <button onclick="showPage('stage1')">Stage 1</button>
   <button onclick="showPage('stage2')">Stage 2</button>
   <button onclick="showPage('stage3')">Stage 3</button>
@@ -61,7 +65,7 @@
 
 <div id="home" class="page active">
   <h2>ようこそ</h2>
-  <p>きらきら星を段階的に練習します</p>
+  <p>鍵盤をクリックすると音が鳴ります</p>
 </div>
 
 <div id="stage1" class="page">
@@ -71,77 +75,80 @@
 
 <div id="stage2" class="page">
   <h2>Stage 2：左手</h2>
-  <p>C3 / G3 のリズム（想定）</p>
+  <p>低音のリズム練習</p>
 </div>
 
 <div id="stage3" class="page">
   <h2>Stage 3：両手</h2>
-  <p>右手：C4〜C5 / 左手：低音</p>
+  <p>右手＋左手</p>
 </div>
 
-<!-- 🎹 2オクターブ鍵盤 -->
-<div class="piano">
-  <!-- Octave 4 -->
-  <div class="key" data-note="C4">C4</div>
-  <div class="key" data-note="D4">D4</div>
-  <div class="key" data-note="E4">E4</div>
-  <div class="key" data-note="F4">F4</div>
-  <div class="key" data-note="G4">G4</div>
-  <div class="key" data-note="A4">A4</div>
-  <div class="key" data-note="B4">B4</div>
+<!-- 🎹 2オクターブ -->
+<div class="piano-wrapper">
+  <div class="piano">
+    <div class="key" data-note="C4">C4</div>
+    <div class="key" data-note="D4">D4</div>
+    <div class="key" data-note="E4">E4</div>
+    <div class="key" data-note="F4">F4</div>
+    <div class="key" data-note="G4">G4</div>
+    <div class="key" data-note="A4">A4</div>
+    <div class="key" data-note="B4">B4</div>
 
-  <!-- Octave 5 -->
-  <div class="key" data-note="C5">C5</div>
-  <div class="key" data-note="D5">D5</div>
-  <div class="key" data-note="E5">E5</div>
-  <div class="key" data-note="F5">F5</div>
-  <div class="key" data-note="G5">G5</div>
-  <div class="key" data-note="A5">A5</div>
-  <div class="key" data-note="B5">B5</div>
+    <div class="key" data-note="C5">C5</div>
+    <div class="key" data-note="D5">D5</div>
+    <div class="key" data-note="E5">E5</div>
+    <div class="key" data-note="F5">F5</div>
+    <div class="key" data-note="G5">G5</div>
+    <div class="key" data-note="A5">A5</div>
+    <div class="key" data-note="B5">B5</div>
+  </div>
 </div>
 
 <script>
-  // ページ切り替え
-  const pages = document.querySelectorAll('.page');
-  function showPage(id) {
-    pages.forEach(p => p.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+/* ページ切り替え */
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+/* 🔊 AudioContext（ユーザー操作後に作成） */
+let audioCtx = null;
+
+const freqMap = {
+  C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23,
+  G4: 392.00, A4: 440.00, B4: 493.88,
+  C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46,
+  G5: 783.99, A5: 880.00, B5: 987.77
+};
+
+function playNote(note) {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
 
-  // Web Audio API
-  const AudioContext = window.AudioContext || window.webkitAudioContext;
-  const audioCtx = new AudioContext();
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
 
-  const freqMap = {
-    C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23,
-    G4: 392.00, A4: 440.00, B4: 493.88,
-    C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46,
-    G5: 783.99, A5: 880.00, B5: 987.77
-  };
+  osc.frequency.value = freqMap[note];
+  osc.type = "sine";
 
-  function playNote(note) {
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
 
-    osc.frequency.value = freqMap[note];
-    osc.type = "sine";
+  gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.4, audioCtx.currentTime + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
 
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.6);
+}
 
-    gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.4, audioCtx.currentTime + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
-
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.6);
-  }
-
-  document.querySelectorAll('.key').forEach(key => {
-    key.addEventListener('click', () => {
-      playNote(key.dataset.note);
-    });
+/* 鍵盤クリック */
+document.querySelectorAll('.key').forEach(key => {
+  key.addEventListener('click', () => {
+    playNote(key.dataset.note);
   });
+});
 </script>
 
 </body>
