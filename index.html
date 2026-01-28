@@ -124,7 +124,7 @@ const noteFreq = {
   F5: 698.46, G5: 783.99, A5: 880.0, B5: 987.77
 };
 
-// ===== ステージ定義（🔥最重要）=====
+// ===== ステージ（🔥 先に定義）=====
 const stages = {
   1: ["C4","G4","A4"],
   2: ["C4","G4","C5","G5"],
@@ -133,7 +133,7 @@ const stages = {
 
 let currentStage = 1;
 
-// ===== ガイド更新 =====
+// ===== ガイド =====
 function updateGuide() {
   document.querySelectorAll('.white-key').forEach(key => {
     key.classList.remove('guide');
@@ -148,7 +148,7 @@ function setStage(stage) {
   updateGuide();
 }
 
-// ===== クリックで音 =====
+// ===== クリック音 =====
 document.querySelectorAll('.white-key').forEach(key => {
   key.addEventListener('click', () => {
 
