@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Piano Stage Guide</title>
+<title>Piano Stage Guide Final</title>
 
 <style>
 body {
   font-family: Arial, sans-serif;
-  text-align: center;
   background: #f4f4f4;
+  text-align: center;
   padding: 20px;
 }
 
@@ -38,7 +38,7 @@ body {
   cursor: pointer;
 }
 
-/* ⭐ ステージ制ガイド（黄色） */
+/* ⭐ ガイド（黄色のみ） */
 .white-key.guide {
   background: #ffeb3b;
 }
@@ -64,7 +64,7 @@ body {
 
 <body>
 
-<h1>🎹 ステージ制ガイド</h1>
+<h1>🎹 ステージ制ガイド（最終安定版）</h1>
 
 <div>
   <button onclick="setStage(1)">Stage 1</button>
@@ -76,41 +76,21 @@ body {
   <div class="piano">
 
     <!-- ===== Octave 4 ===== -->
-    <div class="white-key" data-note="C4">C4
-      <div class="black-key" data-note="C#4">C#</div>
-    </div>
-    <div class="white-key" data-note="D4">D4
-      <div class="black-key" data-note="D#4">D#</div>
-    </div>
+    <div class="white-key" data-note="C4">C4<div class="black-key">C#</div></div>
+    <div class="white-key" data-note="D4">D4<div class="black-key">D#</div></div>
     <div class="white-key" data-note="E4">E4</div>
-    <div class="white-key" data-note="F4">F4
-      <div class="black-key" data-note="F#4">F#</div>
-    </div>
-    <div class="white-key" data-note="G4">G4
-      <div class="black-key" data-note="G#4">G#</div>
-    </div>
-    <div class="white-key" data-note="A4">A4
-      <div class="black-key" data-note="A#4">A#</div>
-    </div>
+    <div class="white-key" data-note="F4">F4<div class="black-key">F#</div></div>
+    <div class="white-key" data-note="G4">G4<div class="black-key">G#</div></div>
+    <div class="white-key" data-note="A4">A4<div class="black-key">A#</div></div>
     <div class="white-key" data-note="B4">B4</div>
 
     <!-- ===== Octave 5 ===== -->
-    <div class="white-key" data-note="C5">C5
-      <div class="black-key" data-note="C#5">C#</div>
-    </div>
-    <div class="white-key" data-note="D5">D5
-      <div class="black-key" data-note="D#5">D#</div>
-    </div>
+    <div class="white-key" data-note="C5">C5<div class="black-key">C#</div></div>
+    <div class="white-key" data-note="D5">D5<div class="black-key">D#</div></div>
     <div class="white-key" data-note="E5">E5</div>
-    <div class="white-key" data-note="F5">F5
-      <div class="black-key" data-note="F#5">F#</div>
-    </div>
-    <div class="white-key" data-note="G5">G5
-      <div class="black-key" data-note="G#5">G#</div>
-    </div>
-    <div class="white-key" data-note="A5">A5
-      <div class="black-key" data-note="A#5">A#</div>
-    </div>
+    <div class="white-key" data-note="F5">F5<div class="black-key">F#</div></div>
+    <div class="white-key" data-note="G5">G5<div class="black-key">G#</div></div>
+    <div class="white-key" data-note="A5">A5<div class="black-key">A#</div></div>
     <div class="white-key" data-note="B5">B5</div>
 
   </div>
@@ -126,7 +106,7 @@ const stages = {
 
 let currentStage = 1;
 
-/* ===== ガイド更新 ===== */
+/* ガイド更新 */
 function updateGuide() {
   document.querySelectorAll('.white-key').forEach(key => {
     key.classList.remove('guide');
