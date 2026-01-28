@@ -183,6 +183,10 @@ document.querySelectorAll(".white-key").forEach(key => {
 
 // ===== Initialize =====
 updateGuide();
+  if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
+
 </script>
 
 </body>
