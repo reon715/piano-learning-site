@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Piano Learning App</title>
-<h1>🎹 Piano Learning App – Stage Guide</h1>
 
 <style>
 body {
@@ -14,7 +13,16 @@ body {
   padding: 20px;
 }
 
-/* ===== ピアノ ===== */
+h1 {
+  margin-bottom: 5px;
+}
+
+p {
+  margin-top: 0;
+  color: #444;
+}
+
+/* ===== Piano ===== */
 .piano-wrapper {
   overflow-x: auto;
   margin: 30px auto;
@@ -25,7 +33,7 @@ body {
   width: max-content;
 }
 
-/* 白鍵 */
+/* White keys */
 .white-key {
   position: relative;
   width: 60px;
@@ -37,14 +45,15 @@ body {
   justify-content: center;
   padding-bottom: 8px;
   cursor: pointer;
+  user-select: none;
 }
 
-/* ⭐ ガイド（黄色のみ） */
+/* Stage guide (yellow) */
 .white-key.guide {
   background: #ffeb3b;
 }
 
-/* 黒鍵 */
+/* Black keys */
 .black-key {
   position: absolute;
   right: -20px;
@@ -59,12 +68,18 @@ body {
   justify-content: center;
   padding-bottom: 6px;
   font-size: 12px;
+  user-select: none;
 }
 </style>
 </head>
 
 <body>
 
+<h1>🎹 Piano Learning App</h1>
+<p>
+Learn piano step by step using a stage-based guide system.
+Only the highlighted (yellow) keys should be played.
+</p>
 
 <div>
   <button onclick="setStage(1)">Stage 1</button>
@@ -97,7 +112,7 @@ body {
 </div>
 
 <script>
-// ===== 音源 =====
+// ===== Audio =====
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 function playNote(freq) {
@@ -119,26 +134,26 @@ function playNote(freq) {
 
 const noteFreq = {
   C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23,
-  G4: 392.0, A4: 440.0, B4: 493.88,
+  G4: 392.0,  A4: 440.0,  B4: 493.88,
   C5: 523.25, D5: 587.33, E5: 659.25,
   F5: 698.46, G5: 783.99, A5: 880.0, B5: 987.77
 };
 
-// ===== ステージ（🔥 先に定義）=====
+// ===== Stage definitions =====
 const stages = {
-  1: ["C4","G4","A4"],
-  2: ["C4","G4","C5","G5"],
-  3: ["C4","D4","E4","F4","G4","A4","C5","D5","E5"]
+  1: ["C4", "G4", "A4"],
+  2: ["C4", "G4", "C5", "G5"],
+  3: ["C4", "D4", "E4", "F4", "G4", "A4", "C5", "D5", "E5"]
 };
 
 let currentStage = 1;
 
-// ===== ガイド =====
+// ===== Update guide =====
 function updateGuide() {
-  document.querySelectorAll('.white-key').forEach(key => {
-    key.classList.remove('guide');
+  document.querySelectorAll(".white-key").forEach(key => {
+    key.classList.remove("guide");
     if (stages[currentStage].includes(key.dataset.note)) {
-      key.classList.add('guide');
+      key.classList.add("guide");
     }
   });
 }
@@ -148,27 +163,25 @@ function setStage(stage) {
   updateGuide();
 }
 
-// ===== クリック音 =====
-document.querySelectorAll('.white-key').forEach(key => {
-  key.addEventListener('click', () => {
+// ===== Click sound =====
+document.querySelectorAll(".white-key").forEach(key => {
+  key.addEventListener("click", () => {
 
-    if (audioCtx.state === 'suspended') {
+    if (audioCtx.state === "suspended") {
       audioCtx.resume();
     }
 
     const note = key.dataset.note;
 
-    if (key.classList.contains('guide') && noteFreq[note]) {
+    if (key.classList.contains("guide") && noteFreq[note]) {
       playNote(noteFreq[note]);
     }
   });
 });
 
-// ===== 初期化（最後！）=====
+// ===== Initialize =====
 updateGuide();
 </script>
-
-
 
 </body>
 </html>
