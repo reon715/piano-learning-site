@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Piano Learning App</title>
+<title>Piano Stage Guide Fix</title>
 
 <style>
 body {
@@ -11,11 +11,6 @@ body {
   text-align: center;
   background: #f4f4f4;
   padding: 20px;
-}
-
-.nav button {
-  margin: 5px;
-  padding: 10px 15px;
 }
 
 /* ===== ピアノ ===== */
@@ -43,10 +38,13 @@ body {
   cursor: pointer;
 }
 
-.white-key.active {
-  background: #ffeb3b;
+/* 🔥 ガイド表示（超目立つ） */
+.white-key.guide {
+  background: #4caf50;
+  color: white;
 }
 
+/* 黒鍵 */
 .black-key {
   position: absolute;
   right: -20px;
@@ -61,107 +59,64 @@ body {
   justify-content: center;
   padding-bottom: 6px;
   font-size: 12px;
-  cursor: pointer;
-}
-
-.black-key.active {
-  background: #ff9800;
 }
 </style>
 </head>
 
 <body>
 
-<h1>🎹 Piano Learning App</h1>
-<p>ステージ制ガイド付き（光る鍵盤）</p>
+<h1>🎹 Stage Guide 修正版</h1>
 
-<div class="nav">
-  <button onclick="setStage(1)">Stage 1 右手</button>
-  <button onclick="setStage(2)">Stage 2 左手</button>
-  <button onclick="setStage(3)">Stage 3 両手</button>
+<div>
+  <button onclick="setStage(1)">Stage 1</button>
+  <button onclick="setStage(2)">Stage 2</button>
+  <button onclick="setStage(3)">Stage 3</button>
 </div>
 
 <div class="piano-wrapper">
   <div class="piano">
 
-    <!-- Octave 4 -->
-    <div class="white-key" data-note="C4">C4
-      <div class="black-key" data-note="C#4">C#</div>
-    </div>
-    <div class="white-key" data-note="D4">D4
-      <div class="black-key" data-note="D#4">D#</div>
-    </div>
+    <div class="white-key" data-note="C4">C4</div>
+    <div class="white-key" data-note="D4">D4</div>
     <div class="white-key" data-note="E4">E4</div>
-    <div class="white-key" data-note="F4">F4
-      <div class="black-key" data-note="F#4">F#</div>
-    </div>
-    <div class="white-key" data-note="G4">G4
-      <div class="black-key" data-note="G#4">G#</div>
-    </div>
-    <div class="white-key" data-note="A4">A4
-      <div class="black-key" data-note="A#4">A#</div>
-    </div>
+    <div class="white-key" data-note="F4">F4</div>
+    <div class="white-key" data-note="G4">G4</div>
+    <div class="white-key" data-note="A4">A4</div>
     <div class="white-key" data-note="B4">B4</div>
 
   </div>
 </div>
 
 <script>
-/* ===== Audio ===== */
-let audioCtx = null;
-const freqMap = {
-  C4:261.63, D4:293.66, E4:329.63, F4:349.23,
-  G4:392.00, A4:440.00, B4:493.88
+/* ===== ステージ定義（完全一致） ===== */
+const stages = {
+  1: ["C4","G4","A4"],
+  2: ["C4","G4"],
+  3: ["C4","D4","E4","F4","G4","A4"]
 };
 
-function playNote(note) {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-
-  osc.frequency.value = freqMap[note];
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-
-  osc.start();
-  osc.stop(audioCtx.currentTime + 0.5);
-}
-
-/* ===== ステージ制ガイド ===== */
 let currentStage = 1;
 
-const stages = {
-  1: ["C4","G4","A4"],      // 右手
-  2: ["C4","G4"],           // 左手
-  3: ["C4","G4","A4"]       // 両手
-};
+/* ===== ガイド更新 ===== */
+function updateGuide() {
+  document.querySelectorAll('.white-key').forEach(key => {
+    key.classList.remove('guide');
 
+    const note = key.dataset.note.trim();
+    if (stages[currentStage].includes(note)) {
+      key.classList.add('guide');
+    }
+  });
+}
+
+/* ===== ステージ切り替え ===== */
 function setStage(stage) {
   currentStage = stage;
   updateGuide();
 }
 
-function updateGuide() {
-  document.querySelectorAll('.white-key, .black-key').forEach(key => {
-    key.classList.remove('active');
-    if (stages[currentStage].includes(key.dataset.note)) {
-      key.classList.add('active');
-    }
-  });
-}
-
+/* 🔥 初期表示で必ず実行 */
 updateGuide();
-
-/* 鍵盤クリック */
-document.querySelectorAll('.white-key').forEach(key => {
-  key.addEventListener('click', () => {
-    if (stages[currentStage].includes(key.dataset.note)) {
-      playNote(key.dataset.note);
-    }
-  });
-});
 </script>
 
 </body>
