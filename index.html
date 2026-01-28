@@ -97,6 +97,7 @@ body {
 </div>
 
 <script>
+// ===== 音源 =====
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 function playNote(freq) {
@@ -118,32 +119,21 @@ function playNote(freq) {
 
 const noteFreq = {
   C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23,
-  G4: 392.00, A4: 440.00, B4: 493.88,
+  G4: 392.0, A4: 440.0, B4: 493.88,
   C5: 523.25, D5: 587.33, E5: 659.25,
-  F5: 698.46, G5: 783.99, A5: 880.00, B5: 987.77
+  F5: 698.46, G5: 783.99, A5: 880.0, B5: 987.77
 };
-document.querySelectorAll('.white-key').forEach(key => {
-  key.addEventListener('click', () => {
 
-    if (audioCtx.state === 'suspended') {
-      audioCtx.resume();
-    }
-
-    const note = key.dataset.note;
-
-    // 🔒 安全チェック（ここが重要）
-    if (key.classList.contains('guide') && noteFreq[note]) {
-      playNote(noteFreq[note]);
-    }
-  });
-});
-
-
-
+// ===== ステージ定義（🔥最重要）=====
+const stages = {
+  1: ["C4","G4","A4"],
+  2: ["C4","G4","C5","G5"],
+  3: ["C4","D4","E4","F4","G4","A4","C5","D5","E5"]
+};
 
 let currentStage = 1;
 
-/* ガイド更新 */
+// ===== ガイド更新 =====
 function updateGuide() {
   document.querySelectorAll('.white-key').forEach(key => {
     key.classList.remove('guide');
@@ -158,9 +148,27 @@ function setStage(stage) {
   updateGuide();
 }
 
-/* 初期表示 */
+// ===== クリックで音 =====
+document.querySelectorAll('.white-key').forEach(key => {
+  key.addEventListener('click', () => {
+
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+
+    const note = key.dataset.note;
+
+    if (key.classList.contains('guide') && noteFreq[note]) {
+      playNote(noteFreq[note]);
+    }
+  });
+});
+
+// ===== 初期化（最後！）=====
 updateGuide();
 </script>
+
+
 
 </body>
 </html>
