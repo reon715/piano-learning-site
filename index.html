@@ -125,19 +125,19 @@ const noteFreq = {
 document.querySelectorAll('.white-key').forEach(key => {
   key.addEventListener('click', () => {
 
-    // 🔑 ユーザー操作時にAudioContextを有効化
     if (audioCtx.state === 'suspended') {
       audioCtx.resume();
     }
 
     const note = key.dataset.note;
 
-    // ガイド鍵盤だけ鳴らす
-    if (key.classList.contains('guide')) {
+    // 🔒 安全チェック（ここが重要）
+    if (key.classList.contains('guide') && noteFreq[note]) {
       playNote(noteFreq[note]);
     }
   });
 });
+
 
 
 
