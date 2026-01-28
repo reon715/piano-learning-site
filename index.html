@@ -13,7 +13,12 @@ body {
   padding: 20px;
 }
 
-/* ===== ピアノ全体 ===== */
+.nav button {
+  margin: 5px;
+  padding: 10px 15px;
+}
+
+/* ===== ピアノ ===== */
 .piano-wrapper {
   overflow-x: auto;
   margin: 30px auto;
@@ -21,11 +26,10 @@ body {
 
 .piano {
   display: flex;
-  position: relative;
   width: max-content;
 }
 
-/* ===== 白鍵 ===== */
+/* 白鍵 */
 .white-key {
   position: relative;
   width: 60px;
@@ -37,14 +41,12 @@ body {
   justify-content: center;
   padding-bottom: 8px;
   cursor: pointer;
-  user-select: none;
 }
 
-.white-key:active {
-  background: #ddd;
+.white-key.active {
+  background: #ffeb3b;
 }
 
-/* ===== 黒鍵（白鍵の中に重ねる） ===== */
 .black-key {
   position: absolute;
   right: -20px;
@@ -62,8 +64,8 @@ body {
   cursor: pointer;
 }
 
-.black-key:active {
-  background: #444;
+.black-key.active {
+  background: #ff9800;
 }
 </style>
 </head>
@@ -71,70 +73,35 @@ body {
 <body>
 
 <h1>🎹 Piano Learning App</h1>
-<p>2オクターブ（C4〜B5）＋黒鍵 正配置</p>
+<p>ステージ制ガイド付き（光る鍵盤）</p>
+
+<div class="nav">
+  <button onclick="setStage(1)">Stage 1 右手</button>
+  <button onclick="setStage(2)">Stage 2 左手</button>
+  <button onclick="setStage(3)">Stage 3 両手</button>
+</div>
 
 <div class="piano-wrapper">
   <div class="piano">
 
-    <!-- ===== Octave 4 ===== -->
-    <div class="white-key" data-note="C4">
-      C4
+    <!-- Octave 4 -->
+    <div class="white-key" data-note="C4">C4
       <div class="black-key" data-note="C#4">C#</div>
     </div>
-
-    <div class="white-key" data-note="D4">
-      D4
+    <div class="white-key" data-note="D4">D4
       <div class="black-key" data-note="D#4">D#</div>
     </div>
-
     <div class="white-key" data-note="E4">E4</div>
-
-    <div class="white-key" data-note="F4">
-      F4
+    <div class="white-key" data-note="F4">F4
       <div class="black-key" data-note="F#4">F#</div>
     </div>
-
-    <div class="white-key" data-note="G4">
-      G4
+    <div class="white-key" data-note="G4">G4
       <div class="black-key" data-note="G#4">G#</div>
     </div>
-
-    <div class="white-key" data-note="A4">
-      A4
+    <div class="white-key" data-note="A4">A4
       <div class="black-key" data-note="A#4">A#</div>
     </div>
-
     <div class="white-key" data-note="B4">B4</div>
-
-    <!-- ===== Octave 5 ===== -->
-    <div class="white-key" data-note="C5">
-      C5
-      <div class="black-key" data-note="C#5">C#</div>
-    </div>
-
-    <div class="white-key" data-note="D5">
-      D5
-      <div class="black-key" data-note="D#5">D#</div>
-    </div>
-
-    <div class="white-key" data-note="E5">E5</div>
-
-    <div class="white-key" data-note="F5">
-      F5
-      <div class="black-key" data-note="F#5">F#</div>
-    </div>
-
-    <div class="white-key" data-note="G5">
-      G5
-      <div class="black-key" data-note="G#5">G#</div>
-    </div>
-
-    <div class="white-key" data-note="A5">
-      A5
-      <div class="black-key" data-note="A#5">A#</div>
-    </div>
-
-    <div class="white-key" data-note="B5">B5</div>
 
   </div>
 </div>
@@ -142,44 +109,57 @@ body {
 <script>
 /* ===== Audio ===== */
 let audioCtx = null;
-
 const freqMap = {
-  C4:261.63, "C#4":277.18, D4:293.66, "D#4":311.13, E4:329.63,
-  F4:349.23, "F#4":369.99, G4:392.00, "G#4":415.30,
-  A4:440.00, "A#4":466.16, B4:493.88,
-
-  C5:523.25, "C#5":554.37, D5:587.33, "D#5":622.25, E5:659.25,
-  F5:698.46, "F#5":739.99, G5:783.99, "G#5":830.61,
-  A5:880.00, "A#5":932.33, B5:987.77
+  C4:261.63, D4:293.66, E4:329.63, F4:349.23,
+  G4:392.00, A4:440.00, B4:493.88
 };
 
 function playNote(note) {
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
-
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
 
   osc.frequency.value = freqMap[note];
-  osc.type = "sine";
-
   osc.connect(gain);
   gain.connect(audioCtx.destination);
 
-  gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.4, audioCtx.currentTime + 0.02);
-  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
-
   osc.start();
-  osc.stop(audioCtx.currentTime + 0.6);
+  osc.stop(audioCtx.currentTime + 0.5);
 }
 
-/* 白鍵・黒鍵 両方対応 */
-document.querySelectorAll('.white-key, .black-key').forEach(key => {
-  key.addEventListener('click', (e) => {
-    e.stopPropagation();
-    playNote(key.dataset.note);
+/* ===== ステージ制ガイド ===== */
+let currentStage = 1;
+
+const stages = {
+  1: ["C4","G4","A4"],      // 右手
+  2: ["C4","G4"],           // 左手
+  3: ["C4","G4","A4"]       // 両手
+};
+
+function setStage(stage) {
+  currentStage = stage;
+  updateGuide();
+}
+
+function updateGuide() {
+  document.querySelectorAll('.white-key, .black-key').forEach(key => {
+    key.classList.remove('active');
+    if (stages[currentStage].includes(key.dataset.note)) {
+      key.classList.add('active');
+    }
+  });
+}
+
+updateGuide();
+
+/* 鍵盤クリック */
+document.querySelectorAll('.white-key').forEach(key => {
+  key.addEventListener('click', () => {
+    if (stages[currentStage].includes(key.dataset.note)) {
+      playNote(key.dataset.note);
+    }
   });
 });
 </script>
